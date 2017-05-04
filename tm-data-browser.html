@@ -1,0 +1,35 @@
+<link rel="import" href="elements.html">
+<!--
+`tm-data-browser`
+
+
+@demo demo/index.html
+-->
+
+<dom-module id="tm-data-browser">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <tm-app-structure app-title="Data Browser" titles="AA,BB">
+
+    </tm-app-structure>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'tm-data-browser',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'tm-data-browser',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
