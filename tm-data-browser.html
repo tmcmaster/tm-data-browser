@@ -13,23 +13,39 @@
         display: block;
       }
     </style>
-    <tm-app-structure app-title="Data Browser" titles="AA,BB">
-
+    <tm-d3></tm-d3>
+    <tm-app-structure app-title="Data Browser" titles="Cord Diagram,Timeline" selected="1">
+      <tm-cord-diagram width="700" height="700" data-file="../data/cord.json"></tm-cord-diagram>
+      <tm-timeline data-file="../data/timeline.json" width="1000" height="1000"></tm-timeline>
     </tm-app-structure>
   </template>
 
   <script>
     Polymer({
-
       is: 'tm-data-browser',
-
       properties: {
-        prop1: {
-          type: String,
-          value: 'tm-data-browser',
-        },
+        cord: { type: Object, notify:true, value: {
+          data: { type: String, notify: true }
+        }}
       },
-
+      behaviors: [Polymer.TM.DataModelListBehaviour],
+      observers: [
+        '_debug(data)'
+      ],
+      _debug: function(object) {
+        console.log('DEBUG: ', JSON.stringify(object));
+      },
+      ready: function() {
+        console.log('tm-data-browser component has been created.');
+        console.log(Polymer.TM.DataModelListBehaviour);
+        this.addListToList(['a','b']);
+        console.log('))))) ', window.d3);
+        const self = this;
+        setTimeout(function() {
+          self.addListToList(['c','d']);
+          console.log('))))) ', window.d3);
+        }, 1000);
+      }
     });
   </script>
 </dom-module>

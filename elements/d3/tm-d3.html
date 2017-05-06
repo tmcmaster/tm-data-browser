@@ -1,0 +1,37 @@
+
+<dom-module id="tm-d3">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+  </template>
+  <script src="d3.v2.js"></script>
+
+  <!-- <script>
+    (function(Polymer) {
+      Polymer({
+        is: 'tm-d3',
+        properties: {
+          d3v2: {
+            type:Object,
+            notify:true
+          }
+        },
+        observers: [
+          'debug(d3v2)'
+        ],
+        debug: function(object) {
+          console.log(object);
+        },
+        ready: function() {
+          console.log('||| Element tm-d3 has been created.', window.d3);
+          this.d3v2 = window.d3;
+        }
+      });
+
+
+    })(window.Polymer);
+  </script> -->
+</dom-module>

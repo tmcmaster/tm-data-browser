@@ -1,0 +1,67 @@
+<script>
+  (function(Polymer) {
+    Polymer.TM = Polymer.TM || {};
+    Polymer.TM.DataModelListBehaviour = {
+      properties: {
+        data: { type:Array, notify:true, value: [] }
+      },
+      scalarToList: function(value) {
+        this.data = [value];
+      },
+      addScalarToList: function(value) {
+        this.data.push(value);
+      },
+      listToList: function(value) {
+        this.data = value;
+      },
+      addListToList: function(value) {
+        for (i in value) {
+          this.data.push(value[i]);
+        }
+        this.notifyPath("data", this.data.slice());
+      },
+      mapToList: function(value) {
+        const newList = [];
+        _addMapToList(value, newList);
+        this.data = newList;
+      },
+      addMapToList: function(value) {
+        _addMapToList(value, this.data);
+          this.notifyPath("data", this.data.slice());
+      },
+      treeToList: function(value) {
+
+      },
+      addTreeToList: function(value) {
+        
+      },
+      graphToList: function(value) {
+        value.nodes.forEach(function() {
+
+        });
+      },
+      addGraphToList: function() {
+
+      },
+      created: function(value) {
+
+      }
+    };
+
+    function _addTreeToList(tree, list, parentPath) {
+      list.push()
+    }
+
+    function _addMapToList(map, list, parentPath) {
+      for (i in Object.keys(map)) {
+        const path = (parentPath === undefined ? i : parentPath + "." + i);
+        const value = map[i];
+        if (value instanceof Object) {
+            _addMapToList(value, list, path);
+        } else {
+          list.push({key:path,value:value});
+        }
+      }
+    }
+  })(window.Polymer);
+</script>
