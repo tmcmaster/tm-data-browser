@@ -1,18 +1,4 @@
-// function flatten(t, e) {
-//   if ("string" == typeof t) return t;
-//   var n = [];
-//   for (e in t) {
-//     var a = flatten(t[e], e);
-//     a && n.push(a)
-//   }
-//   return n.join(" ")
-// }
-
-function generateWordCloud(text, options) {
-
-  // const angleFrom = d3.select("#angle-from").property("value");
-  // const angleTo = d3.select("#angle-to").property("value");
-  // const angleCount = d3.select("#angle-count").property("value");
+function generateWordCloud(container, text, options) {
 
   console.log('font', options.font);
   console.log('spiral', options.spiral);
@@ -21,7 +7,7 @@ function generateWordCloud(text, options) {
   console.log('angleFrom', options.angleFrom);
   console.log('angleTo', options.angleTo);
   console.log('angleCount', options.angleCount);
-
+  console.log('perLine', options.perLine);
 
   const font = options.font;
   const spiral = options.spiral;
@@ -30,12 +16,13 @@ function generateWordCloud(text, options) {
   var angleFrom = options.angleFrom;
   var angleTo = options.angleTo;
   var angleCount = options.angleCount;
+  var perLine = options.perLine;
 
 function parseText(t) {
 
   tags = {};
   var e = {},
-    n = d3.select("#per-line").property("checked");
+    n = perLine;
 
   t.split(n ? /\n/g : wordSeparators).forEach(function (t) {
     discard.test(t) || (n || (t = t.replace(punctuation, "")), stopWords.test(t.toLowerCase()) || (t = t.substr(0, maxLength), e[t.toLowerCase()] = t, tags[t = t.toLowerCase()] = (tags[t] || 0) + 1))
@@ -48,16 +35,6 @@ function parseText(t) {
 }
 
 function generate() {
-  // const font = d3.select("#font").property("value");
-  // const spiral = d3.select("input[name=spiral]:checked").property("value");
-  //const scale = d3.select("input[name=scale]:checked").property("value");
-  // var max = d3.select("#max").property("value");
-  // max = Math.min(tags.length, +max);
-
-  console.log('font', options.font);
-  console.log('spiral', options.spiral);
-  console.log('scale', options.scale);
-  console.log('max', options.max);
   scale = options.scale;
 
   layout.font(font)
@@ -69,10 +46,6 @@ function generate() {
     layout.stop()
     .words(tags.slice(0, max)).start()
 }
-
-// function progress(t) {
-//   statusText.text(++complete + "/" + max)
-// }
 
 function draw(t, e) {
   statusText.style("display", "none"), scale = e ? Math.min(w / Math.abs(e[1].x - w / 2), w / Math.abs(e[0].x - w / 2), h / Math.abs(e[1].y - h / 2), h / Math.abs(e[0].y - h / 2)) / 2 : 1, words = t;
@@ -100,15 +73,6 @@ function draw(t, e) {
     r.appendChild(this)
   }), a.transition().duration(1e3).style("opacity", 1e-6).remove(), vis.transition().delay(1e3).duration(750).attr("transform", "translate(" + [w >> 1, h >> 1] + ")scale(" + scale + ")")
 }
-
-// function downloadPNG() {
-//   d3.event.preventDefault();
-//   var t = document.createElement("canvas"),
-//     e = t.getContext("2d");
-//   t.width = w, t.height = h, e.translate(w >> 1, h >> 1), e.scale(scale, scale), words.forEach(function (t, n) {
-//     e.save(), e.translate(t.x, t.y), e.rotate(t.rotate * Math.PI / 180), e.textAlign = "center", e.fillStyle = fill(t.text.toLowerCase()), e.font = t.size + "px " + t.font, e.fillText(t.text, 0, 0), e.restore()
-//   }), echoContentType.attr("value", "image/png"), echoInput.attr("value", t.toDataURL("image/png")), echoForm.node().submit()
-// }
 
 function downloadSVG() {
   //d3.event.preventDefault(), echoContentType.attr("value", "image/svg+xml;charset=utf-8"), echoInput.attr("value", svg.attr("version", "1.1").attr("xmlns", "http://www.w3.org/2000/svg").node().parentNode.innerHTML), echoForm.node().submit()
@@ -346,29 +310,11 @@ var unicodePunctuationRe = "!-#%-*,-/:;?@\\[-\\]_{}\xa1\xa7\xab\xb6\xb7\xbb\xbf\
     return t.key
   }).on("end", draw);
 
-  // echoForm = d3.select("body").append("form").attr("action", "https://www.jasondavies.com/echo").attr("target", "_blank").attr("method", "POST"),
-  // echoContentType = echoForm.append("input").attr("type", "hidden").attr("name", "content-type"),
-  // echoInput = echoForm.append("input").attr("type", "hidden").attr("name", "echo");
-
-  var svg = d3.select("#vis").select("svg").remove();
-  svg = d3.select("#vis").append("svg").attr("width", w).attr("height", h);
+  var svg = d3.select(container).select("svg").remove();
+  svg = d3.select(container).append("svg").attr("width", w).attr("height", h);
 
   background = svg.append("g"),
   vis = svg.append("g").attr("transform", "translate(" + [w >> 1, h >> 1] + ")");
-
-//d3.select("#download-svg").on("click", downloadSVG), d3.select("#download-png").on("click", downloadPNG);
-
-// var form = d3.select("#form").on("submit", function () {
-//   console.log('----------------');
-//   parseText(d3.select("#text").property("value")), d3.event.preventDefault()
-// });
-
-// form.selectAll("input[type=number]")
-//   .on("click.refresh", function () {
-//     this.value !== this.defaultValue && (generate(), this.defaultValue = this.value)
-//   });
-
-// form.selectAll("input[type=radio], #font").on("change", generate);
 
 var stopWords = /^(i|me|my|myself|we|us|our|ours|ourselves|you|your|yours|yourself|yourselves|he|him|his|himself|she|her|hers|herself|it|its|itself|they|them|their|theirs|themselves|what|which|who|whom|whose|this|that|these|those|am|is|are|was|were|be|been|being|have|has|had|having|do|does|did|doing|will|would|should|can|could|ought|i'm|you're|he's|she's|it's|we're|they're|i've|you've|we've|they've|i'd|you'd|he'd|she'd|we'd|they'd|i'll|you'll|he'll|she'll|we'll|they'll|isn't|aren't|wasn't|weren't|hasn't|haven't|hadn't|doesn't|don't|didn't|won't|wouldn't|shan't|shouldn't|can't|cannot|couldn't|mustn't|let's|that's|who's|what's|here's|there's|when's|where's|why's|how's|a|an|the|and|but|if|or|because|as|until|while|of|at|by|for|with|about|against|between|into|through|during|before|after|above|below|to|from|up|upon|down|in|out|on|off|over|under|again|further|then|once|here|there|when|where|why|how|all|any|both|each|few|more|most|other|some|such|no|nor|not|only|own|same|so|than|too|very|say|says|said|shall)$/;
 
@@ -378,22 +324,8 @@ punctuation = new RegExp("[" + unicodePunctuationRe + "]", "g"),
   htmlTags = /(<[^>]*?>|<script.*?<\/script>|<style.*?<\/style>|<head.*?><\/head>)/g,
   matchTwitter = /^https?:\/\/([^\.]*\.)?twitter\.com/;
 
-// d3.select("#random-palette")
-//   .on("click", function () {
-//     paletteJSON("http://www.colourlovers.com/api/palettes/random", {}, function (t) {
-//       fill.range(t[0].colors), vis.selectAll("text").style("fill", function (t) {
-//         return fill(t.text.toLowerCase())
-//       })
-//     });
-//     d3.event.preventDefault();
-//   });
-
 (function () {
   function t() {
-    // const angleFrom = d3.select("#angle-from").property("value");
-    // const angleTo = d3.select("#angle-to").property("value");
-    // const angleCount = d3.select("#angle-count").property("value");
-
     c = +angleCount, u = Math.max(-90, Math.min(90, +angleFrom)), i = Math.max(-90, Math.min(90, +angleTo)), e()
   }
 

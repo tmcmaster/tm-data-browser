@@ -14,14 +14,15 @@
 
     Polymer.TM.D3_V2_Behavior = [ Polymer.TM.D3Behavior, {
       _rebuildGraph: function(data,height,width) {
+        console.log('*** Rebuilding Graph (D3V2)');
         if (window.d3v2 === undefined) {
           const self = this;
           document.body.addEventListener("D3V2Loaded", function() {
             console.log('>>>>>D3 version 2 has been loaded.', window.d3v2);
-            self.createDiagram(window.d3v2);
+            self._createDiagram(window.d3v2);
           }, false);
         } else {
-          this.createDiagram(window.d3v2);
+          this._createDiagram(window.d3v2);
         }
       },
       ready: function() {
@@ -37,8 +38,38 @@
       }
     } ];
 
+    Polymer.TM.D3_V3_Behavior = [ Polymer.TM.D3Behavior, {
+      _rebuildGraph: function(data,height,width) {
+      },
+      createDiagram: function() {
+        console.log('*** Rebuilding Graph (D3V3)');
+        if (window.d3v3 === undefined) {
+          const self = this;
+          document.body.addEventListener("D3V3Loaded", function() {
+            console.log('>>>>> Creating Diagram.', window.d3v3);
+            self._createDiagram(window.d3v3);
+          }, false);
+        } else {
+          console.log('>|>>>> Creating Diagram.', window.d3v3);
+          this._createDiagram(window.d3v3);
+        }
+      },
+      ready: function() {
+        var script = document.createElement('script');
+        script.src = "../elements/d3/d3.v3.min.js";
+        console.log('About to load D3 version 3');
+        script.onload = function () {
+          console.log('----- D3 version 3 has been loaded,');
+          window.d3v3 = window.d3;
+          document.body.dispatchEvent(new CustomEvent("D3V3Loaded"));
+        };
+        document.head.appendChild(script);
+      }
+    } ];
+
     Polymer.TM.D3_V4_Behavior = [ Polymer.TM.D3Behavior, {
       _rebuildGraph: function(data,height,width) {
+        console.log('*** Rebuilding Graph (D3V4)');
         if (window.d3v4 === undefined) {
           const self = this;
           document.body.addEventListener("D3V4Loaded", function() {

@@ -14,9 +14,11 @@
       }
     </style>
     <tm-d3></tm-d3>
-    <tm-app-structure app-title="Data Browser" titles="Cord Diagram,Timeline" selected="1">
+    <!-- <tm-app-structure app-title="Data Browser" titles="Cord Diagram,Timeline,Word Cloud" selected="2">
       <tm-cord-diagram width="700" height="700" data-file="../data/cord.json"></tm-cord-diagram>
-      <tm-timeline data-file="../data/timeline.json" width="1000" height="1000"></tm-timeline>
+      <tm-timeline data-file="../data/timeline.json" width="1000" height="1000"></tm-timeline> -->
+    <tm-app-structure app-title="Data Browser" titles="Word Cloud" selected="0">
+      <tm-word-cloud data-file="../data/word-cloud.txt"></tm-word-cloud>
     </tm-app-structure>
   </template>
 
