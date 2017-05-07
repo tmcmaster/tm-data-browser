@@ -9,7 +9,7 @@
       },
       observers: [
         '_rebuildGraph(data,height,width)'
-      ],
+      ]
     };
 
     Polymer.TM.D3_V2_Behavior = [ Polymer.TM.D3Behavior, {
@@ -19,10 +19,10 @@
           const self = this;
           document.body.addEventListener("D3V2Loaded", function() {
             console.log('>>>>>D3 version 2 has been loaded.', window.d3v2);
-            self._createDiagram(window.d3v2);
+            self.createDiagram(window.d3v2);
           }, false);
         } else {
-          this._createDiagram(window.d3v2);
+          this.createDiagram(window.d3v2);
         }
       },
       ready: function() {
@@ -38,20 +38,15 @@
       }
     } ];
 
-    Polymer.TM.D3_V3_Behavior = [ Polymer.TM.D3Behavior, {
-      _rebuildGraph: function(data,height,width) {
-      },
-      createDiagram: function() {
-        console.log('*** Rebuilding Graph (D3V3)');
+    Polymer.TM.D3_V3_Behavior = {
+      createDiagram: function(callback) {
+        console.log('*** Create Diagram (D3V3)');
         if (window.d3v3 === undefined) {
-          const self = this;
           document.body.addEventListener("D3V3Loaded", function() {
-            console.log('>>>>> Creating Diagram.', window.d3v3);
-            self._createDiagram(window.d3v3);
+            callback(window.d3v3);
           }, false);
         } else {
-          console.log('>|>>>> Creating Diagram.', window.d3v3);
-          this._createDiagram(window.d3v3);
+          callback(window.d3v3);
         }
       },
       ready: function() {
@@ -65,7 +60,7 @@
         };
         document.head.appendChild(script);
       }
-    } ];
+    };
 
     Polymer.TM.D3_V4_Behavior = [ Polymer.TM.D3Behavior, {
       _rebuildGraph: function(data,height,width) {
